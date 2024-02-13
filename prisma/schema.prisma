@@ -9,3 +9,37 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+
+model Employee{
+  id Int  @id @default(autoincrement())
+  name String
+  salary Int
+  projects Project[]
+  products Product[]
+}
+
+
+model Project{
+  id Int @id @default(autoincrement())
+  title String
+  due DateTime
+  leader Employee @relation( fields: [ leaderId ], references: [id])
+  leaderId Int
+}
+
+model Product{
+  id Int @id @default(autoincrement())
+  name String
+  price String
+  section FrontpageSection? @relation(fields: [sectionId],references: [id] )
+  sectionId Int? 
+  creators Employee[]
+}
+
+model FrontpageSection {
+  id Int @id @default(autoincrement())
+  name String
+  products Product[]
+
+}
